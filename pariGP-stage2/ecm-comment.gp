@@ -33,7 +33,7 @@ ecm(N, B1,B2, nb = 100)=
     d=1;
 
     while(s<B2,
-      v=(s-s%r)/r;
+      v=(s-s%r)/r;\\giant-step
       if(v!=v2,G=elladd(Ell,G,R);v2=v); \\giant-stepが異なるときだけG+R
       u=s%r; \\baby-step
 
@@ -42,9 +42,10 @@ ecm(N, B1,B2, nb = 100)=
       Hx=U[u+1,1];
 
       d=d*(Gx-Hx);\\かけ合わせる
-      if(N>lift(gcd(d,N))>1,return(lift(gcd(d,N))));\\うまくいけば素因数を出力
 
       s=nextprime(s+1);\\sを次の素数に
     );
+    p=lift(gcd(d,N));
+    if(p>1,return(p));\\うまくいけば素因数を出力
   );
 }
