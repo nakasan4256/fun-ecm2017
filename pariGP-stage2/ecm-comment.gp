@@ -18,29 +18,35 @@ ecm(N, B1,B2, nb = 100)=
     print("stage2: a= ",a);
     /*rと互いに素なr以下の数iについて、U[i]=(i-1)*kPとなる配列Uを用意
     pariGPだと配列が1から始まるため*/
-    U=matrix(r,2);
-    for(i=1,r,
+    U=matrix(53,2);
+
+    for(i=1,53,
       if(gcd(r,i)>1,
-        U[i,]=ellmul(Ell,kP,i-1),U[i,]=[0,0]*Mod(1,N)
+        U[i,]=ellmul(Ell,kP,i),U[i,]=[0,0]*Mod(1,N)
       );
     );
     /*B1~B2内の素数sを、s=rv+u
     (r=210,vはs/rの商,tはs/rの余り)と表す*/
-    s=nextprime(B1);
-    v2=(s-s%r)/r; \\vのコピー、計算量節約のため
+    s=nextprime(B1+1);
+    v=(B1+r/2-(B1+r/2)%r)/r;
+    v2=v; \\vのコピー、計算量節約のため
     R=ellmul(Ell,kP,r); \\R=r*kP
     G=ellmul(Ell,R,v2); \\G=v*R
     d=1;
 
     while(s<B2,
-      v=(s-s%r)/r;\\giant-step
-      if(v!=v2,G=elladd(Ell,G,R);v2=v); \\giant-stepが異なるときだけG+R
-      u=s%r; \\baby-step
+      v=(s-(v-r/2)%r)/r+r/2;\\giant-step
+      while(v>v2,
+      print("aa");
+      G=elladd(Ell,G,R);
+      v2++;
+      ); \\giant-stepが異なるときだけG+R
+      u=s-rv; \\baby-step
 
   \\点G,Hのx座標を取り出す(このへん工夫できそう)
       Gx=G[1];
-      Hx=U[u+1,1];
-
+      Hx=U[(abs(u)+1)/2,1];
+      print("bb");
       d=d*(Gx-Hx);\\かけ合わせる
 
       s=nextprime(s+1);\\sを次の素数に
