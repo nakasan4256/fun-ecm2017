@@ -55,53 +55,33 @@ void extended_dedicated_add(EXTENDED_POINT R, EXTENDED_POINT P, EXTENDED_POINT Q
 	mpz_clears(A,B,C,D,E,F,G,H,tmp,NULL);
 }
 
-void projective_extended_add(PROJECTIVE_POINT R,PROJECTIVE_POINT P,PROJECTIVE_POINT Q,mpz_t d,const mpz_t N){
-  mpz_t A,B,C,dC,D,E,F,G,H,I,J,K,L,M,O,S,T,aG;
-  mpz_inits(A,B,C,dC,D,E,F,G,H,I,J,K,L,M,O,S,T,aG,NULL);
-
-  //R-X
-  // A = Z1*Z2
-  mpz_mul_mod(A,P->Z,Q->Z,N);
-  // B = A^2
-  mpz_mul_mod(B,A,A,N);
-  //C = X1*X2
-  mpz_mul_mod(C,P->X,Q->X,N);
-  //D = Y1*Y2
-  mpz_mul_mod(D,P->Y,Q->Y,N);
-  //dC = d*C
-  mpz_mul_mod(dC,d,C,N);
-  //E = dC*D
-  mpz_mul_mod(E,dC,D,N);
-  //F = B - E
-  mpz_sub(F,B,E);
-  //G = B + E
-  mpz_add(G,B,E);
-  //H = P->X + P->Y
-  mpz_add(H,P->X,P->Y);
-  //I = Q->X + Q->Y
-  mpz_add(I,Q->X,Q->Y);
-  //J = C + D
-  mpz_add(J,C,D);
-  //K = H * I
-  mpz_mul_mod(K,H,I,N);
-  //L = K - C
-  mpz_sub(L,K,C);
-  //M = L - D
-  mpz_sub(M,L,D);
-  //O = F * M
-  mpz_mul_mod(O,F,M,N);
-  //R->X = A * O
-  mpz_mul_mod(R->X,A,O,N);
+void montgomery_add (MONTGOMERY_POINT R, MONTGOMERY_POINT P,  MONTGOMERY_POINT Q,const mpz_t N){
+  mpz_t A,B,C,D,E,F,G,H,MX,MY;
+  mpz_inits(A,B,C,D,E,F,G,H,MX,MY);
+  //A=P->X+P->Z
+  mpz_add(A,P->X,P->Z);
+  //B=P->X-P->Z
+  mpz_sub(B,P->X,P->Z);
+  //C=Q->X+Q->Z
+  mpz_add(C,Q->X,Q->Z);
+  //D=Q->X-Q->Z
+  mpz_sub(D,Q->X,Q->Z);
+  //E=D*A
+  mpz_mul_mod(E,D,A,N);
+  //F=C*B
+  mpz_mul_mod(F,C,B,N);
+  //G=E+F
+  mpz_add(G,E,F);
+  //H=E-F
+  mpz_sub(H,E,F);
+  //G=G^2
+  mpz_mul_mod(G,G,G,N);
+  //H=H^2
+  mpz_mul_mod(H,H,H,N);
+  //MX=P->X-Q->X
+  mpz_sub(MX,P->X,Q->X);
+  //MX=P->Y+Q->X
+  mpz_sub(MX,P->X,Q->X);
+  mpz_clears(A,B,C,D,E,F,G,H,MX,MY);
+} 
   
-  //R->Y
-  //aG = A * G
-  mpz_mul_mod(aG,A,G,N);
-  //S = D - C
-  mpz_sub(S,D,C);
-  //R->Y = aG * S
-  mpz_mul_mod(R->Y,aG,S,N);
-  
-  //R->Z
-  mpz_mul_mod(R->Z,F,G,N);
-  mpz_clears(A,B,C,dC,D,E,F,G,H,I,J,K,L,M,O,S,T,aG,NULL);
-  }
