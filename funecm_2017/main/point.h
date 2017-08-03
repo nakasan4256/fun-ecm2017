@@ -27,12 +27,6 @@ typedef struct
 	mpz_t Z;
 } EXTENDED_POINT[1];
 
-typedef struct
-{
-  mpz_t X;
-  mpz_t Z;
-} MONTGOMERY_POINT[1];
-
 void afftopro(PROJECTIVE_POINT R, const AFFINE_POINT P);
 void protoaff(AFFINE_POINT R, const PROJECTIVE_POINT P, const mpz_t N);
 void protoext(EXTENDED_POINT R, const PROJECTIVE_POINT P, const mpz_t N);
@@ -52,9 +46,5 @@ void exttopro(PROJECTIVE_POINT R, const EXTENDED_POINT P);
 #define extended_point_clear(P) do { mpz_clear(P->X); mpz_clear(P->Y); mpz_clear(P->T); mpz_clear(P->Z); } while (0)
 #define extended_point_set(R, P) do { mpz_set(R->X, P->X); mpz_set(R->Y, P->Y); mpz_set(R->T, P->T); mpz_set(R->Z, P->Z); } while (0)
 #define extended_point_cmp(P, Q) (((mpz_cmp(P->X, Q->X) == 0) && (mpz_cmp(P->Y, Q->Y) == 0) && (mpz_cmp(P->Z, Q->Z) == 0)) ? 0 : 1)
-
-#define montgomery_point_init(P) do { mpz_init(P->X); mpz_init(P->Z);} while (0)
-#define montgomery_point_clear(P) do { mpz_clear(P->X); mpz_clear(P->Z);} while (0)
-#define montgomery_point_set(R, P) do { mpz_set(R->X, P->X); mpz_set(R->Z, P->Z);} while (0)
 
 #endif

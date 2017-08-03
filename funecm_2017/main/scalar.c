@@ -201,23 +201,3 @@ void scalar2(EXTENDED_POINT R, EXTENDED_POINT P, const unsigned long int k, cons
 	}
 	free(Parray);
 }
-
-void mscalar(MONTGOMERY_POINT R0, MONTGOMERY_POINT R1, MONTGOMERY_POINT P, const unsigned long int k, mpz_t N){
-  long int i, m;
-  montgomery_point_init(R0);
-  montgomery_point_set(R1,P);
-  m = count_bit(k);
-  char *bit = (char *)malloc(m);
-  for (i = 0; i < m; i++) {
-    bit[i] = (k >> i) & 1;
-  }
-  for (i = m; i >= 0; i--){
-    if(bit[i]){
-      montgomery_add(R1,R0,R1,N);
-      montgomery_double(R0,R0,N);
-    }else{
-      montgomery_add(R0,R0,R1,N);
-      montgomery_double(R1,R1,N);
-    }
-  }
-}

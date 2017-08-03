@@ -37,6 +37,18 @@ void double_add(PROJECTIVE_POINT R, PROJECTIVE_POINT P, const mpz_t N)
 	mpz_clears(B,C,D,E,F,H,J,NULL);
 }
 
+/*void dedicated_add(PROJECTIVE_POINT R,PROJECTIVE_POINT P, PRPJECTIVE_POINT Q, const mpz_t N) {
+  mpz_t a,b,c,d,u,v;
+  //make u
+  mpz_mul_mod(a,Q->Y,P->Z,N); // a = Yq - Zp
+  mpz_mul_mod(b,P->Y,Q->Z,N); // b = Yp - Zq
+  mpz_sub(u,a,b); // u = a - b
+  //make v
+  mpz_mul_mod(c,Q->X,P->Z);
+  mpz_mul_mod(d,P->X,Q->Z);
+  mpz_sub(v,c,d);
+  //make A
+  }*/
 
 void dedicated_doubling(EXTENDED_POINT R, const EXTENDED_POINT P, const mpz_t N)
 {
@@ -78,24 +90,4 @@ void dedicated_doubling(EXTENDED_POINT R, const EXTENDED_POINT P, const mpz_t N)
 	mpz_mul_mod(R->Z, F, G, N);
 
 	mpz_clears(A,B,C,D,E,G,F,H,NULL);
-}
-
-void montgomery_double (MONTGOMERY_POINT R, MONTGOMERY_POINT P, const mpz_t N){
-  mpz_t A,B,C,D,E;
-  mpz_inits(A,B,C,D,E,NULL);
-  //A = P->X + P->Z
-  mpz_add(A,P->X,P->Z);
-  //A = (A * A) mod N
-  mpz_mul_mod(A,A,A,N);
-  //B = P->X - P->Z
-  mpz_sub(B,P->X,P->Z);
-  //B = (B * B) mod N
-  mpz_mul_mod(B,B,B,N);
-  //C = A - B
-  mpz_sub(C,A,B);
-  //R->X = (A * B) mod N
-  mpz_mul_mod(R->X,A,B,N);
-  //D = A + 2
-  mpz_add(D,A,2);
-  mpz_clears(A,B,C,D,E,NULL);
 }
