@@ -34,20 +34,20 @@ do
   echo "$number,$time">>$HOME/funecm_2017/main/out.$digit.txt
 
   #2016年度のプログラムを実行する.
-  $HOME/funecm_2017/2016/funecm -a $number $B1 $B2 $HOME/funecm_2017/2016/out.$digit.$number.txt>/dev/null
+#  $HOME/funecm_2017/2016/funecm -a $number $B1 $B2 $HOME/funecm_2017/2016/out.$digit.$number.txt>/dev/null
   #funecmの出力ファイルから処理時間を抽出
-  time=$(cat $HOME/funecm_2017/2016/out.$digit.$number.txt|grep total|tail -n 1|sed -e 's/[^0-9.]//g')
+#  time=$(cat $HOME/funecm_2017/2016/out.$digit.$number.txt|grep total|tail -n 1|sed -e 's/[^0-9.]//g')
   #処理時間を表示
-  echo 2016time : $time
+#  echo 2016time : $time
   #処理時間を桁数に応じたファイルに保存
-  echo "$number,$time">>$HOME/funecm_2017/2016/out.$digit.txt
+#  echo "$number,$time">>$HOME/funecm_2017/2016/out.$digit.txt
 done
 
 for ((i=20;i<=50; i+=5))
 do
   echo -n 2017 digit : $i  average : 
   awk -F, '{sum+=$2}END{print sum/NR}' $HOME/funecm_2017/main/out.$i.txt
-  echo -n 2016 digit : $i  average :
-  awk -F, '{sum+=$2}END{print sum/NR}' $HOME/funecm_2017/2016/out.$i.txt
+#  echo -n 2016 digit : $i  average :
+#  awk -F, '{sum+=$2}END{print sum/NR}' $HOME/funecm_2017/2016/out.$i.txt
 done
 

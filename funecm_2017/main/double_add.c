@@ -37,18 +37,6 @@ void double_add(PROJECTIVE_POINT R, PROJECTIVE_POINT P, const mpz_t N)
 	mpz_clears(B,C,D,E,F,H,J,NULL);
 }
 
-/*void dedicated_add(PROJECTIVE_POINT R,PROJECTIVE_POINT P, PRPJECTIVE_POINT Q, const mpz_t N) {
-  mpz_t a,b,c,d,u,v;
-  //make u
-  mpz_mul_mod(a,Q->Y,P->Z,N); // a = Yq - Zp
-  mpz_mul_mod(b,P->Y,Q->Z,N); // b = Yp - Zq
-  mpz_sub(u,a,b); // u = a - b
-  //make v
-  mpz_mul_mod(c,Q->X,P->Z);
-  mpz_mul_mod(d,P->X,Q->Z);
-  mpz_sub(v,c,d);
-  //make A
-  }*/
 
 void dedicated_doubling(EXTENDED_POINT R, const EXTENDED_POINT P, const mpz_t N)
 {
@@ -90,4 +78,35 @@ void dedicated_doubling(EXTENDED_POINT R, const EXTENDED_POINT P, const mpz_t N)
 	mpz_mul_mod(R->Z, F, G, N);
 
 	mpz_clears(A,B,C,D,E,G,F,H,NULL);
+}
+
+void montgomery_double (MONTGOMERY_POINT R, const MONTGOMERY_POINT P, const mpz_t N,const mpz_t a)
+{//montgomery曲線の2倍算の関数
+  mpz_t A,B,C,D,E,F,G,four,inv;
+  mpz_inits(A,B,C,D,E,F,G,four,inv,NULL);
+  mpz_set_ui(four,4);
+  //A = P->X + P->Z = x1+z1
+  mpz_add(A,P->X,P->Z);
+  //A = (A * A) mod N = (x1+z1)^2
+  mpz_mul_mod(A,A,A,N);
+  //B = P->X - P->Z = x1-z1
+  mpz_sub(B,P->X,P->Z);
+  //B = (B * B) mod N = (x1-z1)^2
+  mpz_mul_mod(B,B,B,N);
+  //C = A - B = (x1+z1)^2-(x1-z1)^2
+  mpz_sub(C,A,B);
+  //R->X = (A * B) mod N = (x1+z1)^2*(x1-z1)^2
+  mpz_mul_mod(R->X,A,B,N);
+  //D = a + 2 
+  mpz_add_ui(D,a,2);
+  //E = D / 4 = (a+2)/4
+  mpz_invert(inv,four,N);
+  mpz_mul(E,D,inv);
+  //F = E * C = {(a+2)/4}*{(x1+z1)^2-(x1-z1)^2}
+  mpz_mul_mod(F,E,C,N);
+  //G = F + B = {(a+2)/4}*{(x1+z1)^2-(x1-z1)^2}+(x1-z1)^2
+  mpz_add(G,F,B);
+  //R->Z = C * G = {(x1+z1)^2-(x1-z1)^2}*[{(a+2)/4}*{(x1+z1)^2-(x1-z1)^2}+(x1-z1)^2]
+  mpz_mul_mod(R->Z,C,G,N);
+  mpz_clears(A,B,C,D,E,F,G,four,inv,NULL);
 }

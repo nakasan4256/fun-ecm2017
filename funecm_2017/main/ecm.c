@@ -67,6 +67,9 @@ void ecm(mpz_t f, const mpz_t N, const mpz_t X, const mpz_t Y, mpz_t d, const un
       if (mpz_cmp_ui(f,1) != 0) {
 	end = omp_get_wtime();
 	stage1_time = end - start;
+	//[WORNING]
+	mpz_set_ui(f,1);
+	//[WORNING]
 	goto FACTOR_FOUND;
       }
     }
