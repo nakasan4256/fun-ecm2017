@@ -71,21 +71,21 @@ void montgomery_add (MONTGOMERY_POINT R, MONTGOMERY_POINT P,  MONTGOMERY_POINT Q
   mpz_mul_mod(E,D,A,N);
   //F = C * B = (x3+z3)*(x2-z2)
   mpz_mul_mod(F,C,B,N);
-  //G = E + F = (x3-z3)-(x2+z2)+(x3+z3)*(x2-z2)
+  //G = E + F = (x3-z3)*(x2+z2)+(x3+z3)*(x2-z2)
   mpz_add(G,E,F);
-  //H = E - F = (x3-z3)-(x2+z2)-(x3+z3)*(x2-z2)
+  //H = E - F = (x3-z3)*(x2+z2)-(x3+z3)*(x2-z2)
   mpz_sub(H,E,F);
-  //G = G ^ 2 = {(x3-z3)-(x2+z2)+(x3+z3)*(x2-z2)}^2
+  //G = G ^ 2 = {(x3-z3)*(x2+z2)+(x3+z3)*(x2-z2)}^2
   mpz_mul_mod(G,G,G,N);
-  //H = H ^ 2 = {(x3-z3)-(x2+z2)-(x3+z3)*(x2-z2)}^2
+  //H = H ^ 2 = {(x3-z3)*(x2+z2)-(x3+z3)*(x2-z2)}^2
   mpz_mul_mod(H,H,H,N);
   //MX = P->X - Q->X = x2-x3
   mpz_sub(MX,P->X,Q->X);
   //MZ = P->Z - Q->Z = z2-z3
   mpz_sub(MZ,P->Z,Q->Z);
-  //R->X = MZ * G = (z2-z3)*{(x3-z3)-(x2+z2)+(x3+z3)*(x2-z2)}^2
+  //R->X = MZ * G = (z2-z3)*{(x3-z3)*(x2+z2)+(x3+z3)*(x2-z2)}^2
   mpz_mul_mod(R->X,MZ,G,N);
-  //R->Z = MX * H = (x2-x3)*{(x3-z3)-(x2+z2)-(x3+z3)*(x2-z2)}^2
+  //R->Z = MX * H = (x2-x3)*{(x3-z3)*(x2+z2)-(x3+z3)*(x2-z2)}^2
   mpz_mul_mod(R->Z,MX,H,N);
   mpz_clears(A,B,C,D,E,F,G,H,MX,MZ,NULL);
 } 
