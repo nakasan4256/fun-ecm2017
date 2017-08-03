@@ -80,7 +80,8 @@ void dedicated_doubling(EXTENDED_POINT R, const EXTENDED_POINT P, const mpz_t N)
 	mpz_clears(A,B,C,D,E,G,F,H,NULL);
 }
 
-void montgomery_double (MONTGOMERY_POINT R, const MONTGOMERY_POINT P, const mpz_t N,const mpz_t a){
+void montgomery_double (MONTGOMERY_POINT R, const MONTGOMERY_POINT P, const mpz_t N,const mpz_t a)
+{//montgomery曲線の2倍算の関数
   mpz_t A,B,C,D,E,F,G,four,inv;
   mpz_inits(A,B,C,D,E,F,G,four,inv,NULL);
   mpz_set_ui(four,4);
