@@ -83,9 +83,9 @@ void montgomery_add (MONTGOMERY_POINT R, MONTGOMERY_POINT P,  MONTGOMERY_POINT Q
   mpz_sub(MX,P->X,Q->X);
   //MZ = P->Z - Q->Z = z2-z3
   mpz_sub(MZ,P->Z,Q->Z);
-  //R->X = MZ * G = (z2-z3)*{(x3-z3)-(x2+z2)-(x3+z3)*(x2-z2)}^2
+  //R->X = MZ * G = (z2-z3)*{(x3-z3)-(x2+z2)+(x3+z3)*(x2-z2)}^2
   mpz_mul_mod(R->X,MZ,G,N);
-  //R->Z = MX * H = (x2-x3)*(x3-z3)-(x2+z2)-(x3+z3)*(x2-z2)}^2
+  //R->Z = MX * H = (x2-x3)*{(x3-z3)-(x2+z2)-(x3+z3)*(x2-z2)}^2
   mpz_mul_mod(R->Z,MX,H,N);
   mpz_clears(A,B,C,D,E,F,G,H,MX,MZ,NULL);
 } 
