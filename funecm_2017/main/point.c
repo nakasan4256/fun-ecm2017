@@ -51,7 +51,7 @@ void exttopro(PROJECTIVE_POINT R, const EXTENDED_POINT P)
 }
 
 void protomon(MONTGOMERY_POINT R, const PROJECTIVE_POINT P, const PROJECTIVE_POINT P1, const PROJECTIVE_POINT P2, const mpz_t a, const mpz_t b, const mpz_t N)
-{//projective曲線のkPの座標yをmontgomery曲線のkpの座標yに変更
+{//projective座標がkPの時のy座標をmontgomery曲線のkpの時のy座標に変更
   mpz_t A,B,C,D,E,F,G,H,I,J,K,L,inv;
   mpz_inits(A,B,C,D,E,F,G,H,I,J,K,L,inv,NULL);
   //A = P1->X * P->X = x1*x
